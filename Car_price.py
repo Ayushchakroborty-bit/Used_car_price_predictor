@@ -6,7 +6,6 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import r2_score
 import pickle
 
-# ── Load Data ───────────────────────────────
 df = pd.read_csv("car data.csv")
 
 df["Car_Age"] = 2026 - df["Year"]
@@ -19,14 +18,12 @@ df["Seller_Type"] = df["Seller_Type"].map(
 df["Transmission"] = df["Transmission"].map(
     {"Manual": 0, "Automatic": 1})
 
-# ── Split Data ──────────────────────────────
 X = df.drop("Selling_Price", axis=1)
 y = df["Selling_Price"]
 
 X_train, X_test, y_train, y_test = train_test_split(
     X, y, test_size=0.2, random_state=42)
 
-# ── Train Model ─────────────────────────────
 model = RandomForestRegressor(
     n_estimators=100,
     random_state=42
@@ -44,7 +41,7 @@ with open("car_price_model.pkl", "rb") as f:
     model = pickle.load(f)
 print("Model loaded! ")
 
-# ── Feature Importance ──────────────────────
+
 features = X.columns.tolist()
 importance = model.feature_importances_
 indices = np.argsort(importance)[::-1]
@@ -66,7 +63,7 @@ print("\n=== Feature Importance Ranking ===")
 for i in indices:
     print(f"{features[i]:20} → {importance[i]:.4f}")
 
-# ── Predict Function ────────────────────────
+
 def predict_price(present_price, kms_driven, fuel_type,
                   seller_type, transmission, owner, year):
     car_age = 2026 - year
@@ -88,7 +85,7 @@ def predict_price(present_price, kms_driven, fuel_type,
     predicted = model.predict(car_input)[0]
     return round(predicted, 2)
 
-# ── Interactive Prediction ───────────────────
+
 print("\nGive car details:")
 try:
     present_price = float(input("Current showroom price (lakhs): "))
@@ -99,7 +96,7 @@ try:
     owner         = int(input("Number of previous owners: "))
     year          = int(input("Year of manufacture: "))
 
-    result = predict_price(        # ← inside try block!
+    result = predict_price(     
         present_price, kms_driven, fuel_type,
         seller_type, transmission, owner, year
     )
