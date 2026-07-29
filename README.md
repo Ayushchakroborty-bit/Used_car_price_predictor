@@ -35,9 +35,9 @@ Required libraries:
 
 1. pandas
 2. NumPy
-3. scikit.model_selection
-4. scikit.ensemble
-5. scikit.metrics
+3. sklearn.model_selection
+4. sklearn.ensemble
+5. sklearn.metrics
 6. pickle
 7. Matplotlib
 
